@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if object %}
+Edit Customer
+{% else %}
+Add Customer
+{% endif %}
+{% endblock %}
+
+
+{% block body_class %}
+inner page-form
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page">
+
+  <div class="container">
+
+
+    <!-- =========================
+             BREADCRUMB
+        ========================== -->
+    <div class="breadcrumb">
+
+      <a href="{% url 'customer_app:home' %}">
+        Home
+      </a>
+
+      <span>/</span>
+
+      <a href="{% url 'customer_app:customer_list' %}">
+        Customers
+      </a>
+
+      <span>/</span>
+
+      <span>
+        {% if object %}
+        Edit
+        {% else %}
+        Add
+        {% endif %}
+      </span>
+
+    </div>
+
+
+    <!-- =========================
+             PAGE HEADER
+        ========================== -->
+    <div class="page-head form-page-head">
+
+      <div>
+
+        <span class="eyebrow">
+          Customer management
+        </span>
+
+        <h1>
+          {% if object %}
+          Edit Customer
+          {% else %}
+          Add Customer
+          {% endif %}
+        </h1>
+
+        <p class="page-sub">
+
+          {% if object %}
+          Update the information for this customer.
+          {% else %}
+          Add a new customer to your database.
+          {% endif %}
+
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+             FORM SHELL
+        ========================== -->
+    <div class="form-shell">
+
+
+      <!-- Main Form -->
+      <div class="dashboard-frame">
+
+        <div class="dashboard-toolbar">
+
+          <div class="dashboard-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+
+          <div class="dashboard-toolbar-tabs">
+
+            <span class="toolbar-tab active">
+              Customer information
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="form-body">
+
+          <form method="post" novalidate>
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+            <div class="form-errors">
+
+              {% for error in form.non_field_errors %}
+              <div class="field-error">
+                {{ error }}
+              </div>
+              {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="form-fields">
+
+              {% for field in form %}
+
+              <div class="form-row">
+
+                <label for="{{ field.id_for_label }}" class="form-label">
+
+                  {{ field.label }}
+
+                  {% if field.field.required %}
+                  <span class="required-mark">*</span>
+                  {% endif %}
+
+                </label>
+
+
+                {{ field }}
+
+
+                {% if field.help_text %}
+
+                <span class="form-help">
+                  {{ field.help_text }}
+                </span>
+
+                {% endif %}
+
+
+                {% if field.errors %}
+
+                {% for error in field.errors %}
+
+                <span class="field-error">
+                  {{ error }}
+                </span>
+
+                {% endfor %}
+
+                {% endif %}
+
+              </div>
+
+              {% endfor %}
+
+            </div>
+
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+
+              <a href="{% url 'customer_app:customer_list' %}" class="btn btn-ghost">
+                Cancel
+              </a>
+
+
+              <button type="submit" class="btn btn-acid">
+
+                {% if object %}
+                Save Changes
+                {% else %}
+                Add Customer
+                {% endif %}
+
+                <span aria-hidden="true">↗</span>
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+
+      <!-- Form Aside -->
+      <aside class="form-aside">
+
+        <div class="aside-card">
+
+          <span class="aside-number">
+            +
+          </span>
+
+          <h2>
+            Keep things organized.
+          </h2>
+
+          <p>
+            Store accurate customer information so you can
+            quickly access the records you need.
+          </p>
+
+        </div>
+
+
+        <div class="aside-card muted">
+
+          <span class="aside-label">
+            Tip
+          </span>
+
+          <p>
+            Make sure the customer's contact information
+            is accurate before saving.
+          </p>
+
+        </div>
+
+      </aside>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

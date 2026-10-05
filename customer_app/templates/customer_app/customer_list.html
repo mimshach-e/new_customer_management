@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+All Customers
+{% endblock %}
+
+
+{% block body_class %}
+inner page-list
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page">
+
+  <div class="container">
+
+    <!-- Page Header -->
+    <div class="page-head">
+
+      <div>
+
+        <span class="eyebrow">
+          Customer database
+        </span>
+
+        <h1>
+          All Customers
+        </h1>
+
+        <p class="page-sub">
+          View, search and manage all your customer records.
+        </p>
+
+      </div>
+
+      <div class="page-head-actions">
+
+        <a href="{% url 'customer_app:customer_create' %}" class="btn btn-acid">
+          Add Customer
+          <span aria-hidden="true">↗</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="dashboard-frame stat-strip">
+
+      <div class="dashboard-body">
+
+        <div class="dash-stats">
+
+          <div class="dash-stat-card">
+
+            <span class="dash-stat-label">
+              Total Customers
+            </span>
+
+            <strong class="dash-stat-value">
+              {{ total_count }}
+            </strong>
+
+          </div>
+
+
+          <div class="dash-stat-card">
+
+            <span class="dash-stat-label">
+              Showing
+            </span>
+
+            <strong class="dash-stat-value">
+              {{ customers|length }}
+            </strong>
+
+            <span class="dash-stat-change">
+              Current results
+            </span>
+
+          </div>
+
+
+          <div class="dash-stat-card">
+
+            <span class="dash-stat-label">
+              Database
+            </span>
+
+            <strong class="dash-stat-value">
+              Live
+            </strong>
+
+            <span class="dash-stat-change positive">
+              Up to date
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Search -->
+    <form method="get" action="{% url 'customer_app:customer_list' %}" class="search-bar">
+
+      <select name="field" class="input" aria-label="Search field">
+
+        {% for field in search_fields %}
+
+        <option value="{{ field }}" {% if field == current_field %}selected{% endif %}>
+          {{ field|title }}
+        </option>
+
+        {% endfor %}
+
+      </select>
+
+
+      <input type="search" name="q" value="{{ current_query }}" class="input" placeholder="Search customers..."
+        aria-label="Search customers">
+
+
+      <button type="submit" class="btn btn-acid">
+        Search
+      </button>
+
+
+      {% if current_query %}
+
+      <a href="{% url 'customer_app:customer_list' %}" class="btn btn-ghost">
+        Clear
+      </a>
+
+      {% else %}
+
+      <button type="submit" class="btn btn-ghost">
+        Filter
+      </button>
+
+      {% endif %}
+
+    </form>
+
+
+    <!-- Customer Table -->
+    <div class="dashboard-frame customer-table-frame">
+
+      <!-- Table Toolbar -->
+      <div class="dashboard-toolbar">
+
+        <div class="dashboard-dots">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+
+        <div class="dashboard-toolbar-tabs">
+
+          <span class="toolbar-tab active">
+            Customers
+          </span>
+
+          <span class="toolbar-tab">
+            {{ total_count }} records
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- Table Body -->
+      <div class="dashboard-body dashboard-table-body">
+
+        <div class="dash-table">
+
+          <!-- Table Header -->
+          <div class="dash-table-row head">
+
+            <div class="dash-cell">
+              Customer
+            </div>
+
+            <div class="dash-cell">
+              Email
+            </div>
+
+            <div class="dash-cell">
+              Phone
+            </div>
+
+            <div class="dash-cell">
+              Created
+            </div>
+
+            <div class="dash-cell">
+              Actions
+            </div>
+
+          </div>
+
+
+          <!-- Customer Records -->
+          {% for customer in customers %}
+
+          <div class="dash-table-row">
+
+            <!-- Customer Name -->
+            <div class="dash-cell dash-cell-name" data-label="Customer">
+
+              <span class="dash-cell-icon">
+                {{ customer.name|first|upper }}
+              </span>
+
+
+              <a href="{% url 'customer_app:customer_detail' customer.pk %}">
+                {{ customer.name }}
+              </a>
+
+            </div>
+
+
+            <!-- Email -->
+            <div class="dash-cell" data-label="Email">
+
+              {% if customer.email %}
+
+              {{ customer.email }}
+
+              {% else %}
+
+              <span class="muted-value">
+                —
+              </span>
+
+              {% endif %}
+
+            </div>
+
+
+            <!-- Phone -->
+            <div class="dash-cell" data-label="Phone">
+
+              {% if customer.phone %}
+
+              {{ customer.phone }}
+
+              {% else %}
+
+              <span class="muted-value">
+                —
+              </span>
+
+              {% endif %}
+
+            </div>
+
+
+            <!-- Created Date -->
+            <div class="dash-cell" data-label="Created">
+
+              {{ customer.created_at|date:"M d, Y" }}
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="dash-cell cell-actions" data-label="Actions">
+
+              <a href="{% url 'customer_app:customer_detail' customer.pk %}" class="icon-btn"
+                aria-label="View {{ customer.name }}" title="View">
+                →
+              </a>
+
+
+              <a href="{% url 'customer_app:customer_update' customer.pk %}" class="icon-btn"
+                aria-label="Edit {{ customer.name }}" title="Edit">
+                ✎
+              </a>
+
+
+              <a href="{% url 'customer_app:customer_delete' customer.pk %}" class="icon-btn danger"
+                aria-label="Delete {{ customer.name }}" title="Delete">
+                ×
+              </a>
+
+            </div>
+
+          </div>
+
+
+          {% empty %}
+
+          <!-- Empty State -->
+          <div class="empty-state table-empty">
+
+            <div class="empty-state-mark">
+              —
+            </div>
+
+
+            <h2>
+              No customers found
+            </h2>
+
+
+            <p>
+
+              {% if current_query %}
+
+              No customers matched your search.
+              Try a different search term.
+
+              {% else %}
+
+              You haven't added any customers yet.
+
+              {% endif %}
+
+            </p>
+
+
+            <div class="hero-actions">
+
+              {% if current_query %}
+
+              <a href="{% url 'customer_app:customer_list' %}" class="btn btn-ghost">
+                Clear Search
+              </a>
+
+              {% endif %}
+
+
+              <a href="{% url 'customer_app:customer_create' %}" class="btn btn-acid">
+                Add Customer
+              </a>
+
+            </div>
+
+          </div>
+
+          {% endfor %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+
+    <nav class="pagination" aria-label="Customer pagination">
+
+      {% if page_obj.has_previous %}
+
+      <a href="?page={{ page_obj.previous_page_number }}{% if current_query %}&q={{ current_query|urlencode }}{% endif %}{% if current_field %}&field={{ current_field|urlencode }}{% endif %}"
+        class="pagination-link">
+        ← Previous
+      </a>
+
+      {% else %}
+
+      <span class="pagination-link disabled">
+        ← Previous
+      </span>
+
+      {% endif %}
+
+
+      <span class="pagination-current">
+
+        Page {{ page_obj.number }}
+        of {{ page_obj.paginator.num_pages }}
+
+      </span>
+
+
+      {% if page_obj.has_next %}
+
+      <a href="?page={{ page_obj.next_page_number }}{% if current_query %}&q={{ current_query|urlencode }}{% endif %}{% if current_field %}&field={{ current_field|urlencode }}{% endif %}"
+        class="pagination-link">
+        Next →
+      </a>
+
+      {% else %}
+
+      <span class="pagination-link disabled">
+        Next →
+      </span>
+
+      {% endif %}
+
+    </nav>
+
+    {% endif %}
+
+  </div>
+
+</section>
+
+{% endblock %}

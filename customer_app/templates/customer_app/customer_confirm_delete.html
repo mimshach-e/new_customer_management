@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}
+Delete Customer
+{% endblock %}
+
+
+{% block body_class %}
+inner page-danger
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page">
+
+  <div class="container">
+
+
+    <!-- =========================
+             BREADCRUMB
+        ========================== -->
+    <div class="breadcrumb">
+
+      <a href="{% url 'customer_app:home' %}">
+        Home
+      </a>
+
+      <span>/</span>
+
+      <a href="{% url 'customer_app:customer_list' %}">
+        Customers
+      </a>
+
+      <span>/</span>
+
+      <span>
+        Delete
+      </span>
+
+    </div>
+
+
+    <!-- =========================
+             CONFIRMATION CARD
+        ========================== -->
+    <div class="dashboard-frame confirm-card">
+
+      <div class="dashboard-toolbar">
+
+        <div class="dashboard-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+
+        <div class="dashboard-toolbar-tabs">
+
+          <span class="toolbar-tab active danger">
+            Delete customer
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="confirm-body">
+
+        <div class="confirm-mark">
+          ×
+        </div>
+
+
+        <span class="eyebrow danger-eyebrow">
+          Permanent action
+        </span>
+
+
+        <h1>
+          Delete this customer?
+        </h1>
+
+
+        <p>
+          You are about to permanently delete
+          <strong>{{ customer.name }}</strong>.
+          This action cannot be undone.
+        </p>
+
+
+        <div class="confirm-meta">
+
+          <span>
+            Customer ID:
+          </span>
+
+          <strong>
+            #{{ customer.pk }}
+          </strong>
+
+        </div>
+
+
+        <form method="post" class="confirm-actions">
+
+          {% csrf_token %}
+
+
+          <a href="{% url 'customer_app:customer_detail' customer.pk %}" class="btn btn-ghost">
+            Cancel
+          </a>
+
+
+          <button type="submit" class="btn btn-danger">
+            Yes, Delete Customer
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

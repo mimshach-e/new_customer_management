@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}
+Customer Management System
+{% endblock %}
+
+
+{% block body_class %}
+home
+{% endblock %}
+
+
+{% block content %}
+
+<!-- =========================
+     HERO SECTION
+========================== -->
+<section class="hero">
+
+  <div class="container hero-inner">
+
+    <!-- Hero Copy -->
+    <div class="hero-content">
+
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Customer management made simple
+      </div>
+
+
+      <h1>
+        Manage your customers
+        <span class="accent-word">better.</span>
+      </h1>
+
+
+      <p class="hero-sub">
+        Keep your customer information organized, accessible and
+        easy to manage from one simple dashboard.
+      </p>
+
+
+      <div class="hero-actions">
+
+        <a href="{% url 'customer_app:customer_create' %}" class="btn btn-acid">
+          Add Customer
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        <a href="{% url 'customer_app:customer_list' %}" class="btn btn-ghost">
+          View Customers
+          <span aria-hidden="true">→</span>
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+             DASHBOARD PREVIEW
+        ========================== -->
+    <div class="hero-dashboard">
+
+      <div class="dashboard-frame">
+
+        <!-- Dashboard Toolbar -->
+        <div class="dashboard-toolbar">
+
+          <div class="dashboard-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+
+          <div class="dashboard-toolbar-tabs">
+
+            <span class="toolbar-tab active">
+              Overview
+            </span>
+
+            <span class="toolbar-tab">
+              Customers
+            </span>
+
+            <span class="toolbar-tab">
+              Activity
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Dashboard Body -->
+        <div class="dashboard-body">
+
+          <!-- Stats -->
+          <div class="dash-stats">
+
+            <div class="dash-stat-card">
+
+              <span class="dash-stat-label">
+                Total Customers
+              </span>
+
+              <strong class="dash-stat-value">
+                {{ total_customers }}
+              </strong>
+
+              {% if total_customers_change %}
+              <span class="dash-stat-change positive">
+                {{ total_customers_change }}
+              </span>
+              {% endif %}
+
+            </div>
+
+
+            <div class="dash-stat-card">
+
+              <span class="dash-stat-label">
+                Active Customers
+              </span>
+
+              <strong class="dash-stat-value">
+                {{ active_customers }}
+              </strong>
+
+              {% if active_customers_change %}
+              <span class="dash-stat-change positive">
+                {{ active_customers_change }}
+              </span>
+              {% endif %}
+
+            </div>
+
+
+            <div class="dash-stat-card">
+
+              <span class="dash-stat-label">
+                Recent Activity
+              </span>
+
+              <strong class="dash-stat-value">
+                {{ recent_customers|length }}
+              </strong>
+
+              <span class="dash-stat-change">
+                Latest records
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- Recent Customers -->
+          <div class="dashboard-table-area">
+
+            <div class="dash-table-header">
+
+              <div>
+                <span class="eyebrow">
+                  Customer overview
+                </span>
+
+                <h2>
+                  Recent customers
+                </h2>
+              </div>
+
+
+              <a href="{% url 'customer_app:customer_list' %}" class="table-link">
+                View all →
+              </a>
+
+            </div>
+
+
+            <div class="dash-table">
+
+              <!-- Table Header -->
+              <div class="dash-table-row head">
+
+                <div class="dash-cell">
+                  Customer
+                </div>
+
+                <div class="dash-cell">
+                  Email
+                </div>
+
+                <div class="dash-cell">
+                  Phone
+                </div>
+
+                <div class="dash-cell">
+                  Created
+                </div>
+
+                <div class="dash-cell">
+                  Status
+                </div>
+
+              </div>
+
+
+              <!-- Customer Rows -->
+              {% for customer in recent_customers %}
+
+              <div class="dash-table-row">
+
+                <div class="dash-cell dash-cell-name" data-label="Customer">
+
+                  <span class="dash-cell-icon">
+                    {{ customer.name|first|upper }}
+                  </span>
+
+                  <a href="{% url 'customer_app:customer_detail' customer.pk %}">
+                    {{ customer.name }}
+                  </a>
+
+                </div>
+
+
+                <div class="dash-cell" data-label="Email">
+                  {{ customer.email|default:"—" }}
+                </div>
+
+
+                <div class="dash-cell" data-label="Phone">
+                  {{ customer.phone|default:"—" }}
+                </div>
+
+
+                <div class="dash-cell" data-label="Created">
+                  {{ customer.created_at|date:"M d, Y" }}
+                </div>
+
+
+                <div class="dash-cell" data-label="Status">
+                  <span class="dash-status active">
+                    Active
+                  </span>
+                </div>
+
+              </div>
+
+              {% empty %}
+
+              <div class="dash-empty-row">
+                No customers have been added yet.
+              </div>
+
+              {% endfor %}
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FEATURE STRIP
+========================== -->
+<section class="home-feature-section">
+
+  <div class="container">
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+
+        <span class="feature-number">01</span>
+
+        <h3>
+          Organized
+        </h3>
+
+        <p>
+          Keep all your customer information in one central place.
+        </p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <span class="feature-number">02</span>
+
+        <h3>
+          Accessible
+        </h3>
+
+        <p>
+          Quickly find customer records whenever you need them.
+        </p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <span class="feature-number">03</span>
+
+        <h3>
+          Simple
+        </h3>
+
+        <p>
+          Manage customer records without unnecessary complexity.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

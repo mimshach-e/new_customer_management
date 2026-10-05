@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ customer.name }}
+{% endblock %}
+
+
+{% block body_class %}
+inner page-detail
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page">
+
+  <div class="container">
+
+
+    <!-- =========================
+             BREADCRUMB
+        ========================== -->
+    <div class="breadcrumb">
+
+      <a href="{% url 'customer_app:home' %}">
+        Home
+      </a>
+
+      <span>/</span>
+
+      <a href="{% url 'customer_app:customer_list' %}">
+        Customers
+      </a>
+
+      <span>/</span>
+
+      <span>
+        {{ customer.name }}
+      </span>
+
+    </div>
+
+
+    <!-- =========================
+             CUSTOMER PANEL
+        ========================== -->
+    <div class="dashboard-frame detail-frame">
+
+      <!-- Panel Header -->
+      <div class="panel-head">
+
+        <div class="panel-id">
+
+          <div class="avatar-lg">
+            {{ customer.name|first|upper }}
+          </div>
+
+
+          <div>
+
+            <span class="eyebrow">
+              Customer record
+            </span>
+
+            <h1>
+              {{ customer.name }}
+            </h1>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel-actions">
+
+          <a href="{% url 'customer_app:customer_update' customer.pk %}" class="btn btn-ghost">
+            Edit
+          </a>
+
+
+          <a href="{% url 'customer_app:customer_delete' customer.pk %}" class="btn btn-danger">
+            Delete
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <!-- Detail Content -->
+      <div class="dashboard-body">
+
+        <div class="detail-grid">
+
+
+          <!-- Name -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Full Name
+            </span>
+
+            <span class="detail-value">
+              {{ customer.name }}
+            </span>
+
+          </div>
+
+
+          <!-- Email -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Email Address
+            </span>
+
+            <span class="detail-value">
+
+              {% if customer.email %}
+
+              <a href="mailto:{{ customer.email }}">
+                {{ customer.email }}
+              </a>
+
+              {% else %}
+
+              —
+
+              {% endif %}
+
+            </span>
+
+          </div>
+
+
+          <!-- Phone -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Phone Number
+            </span>
+
+            <span class="detail-value">
+
+              {% if customer.phone %}
+
+              <a href="tel:{{ customer.phone }}">
+                {{ customer.phone }}
+              </a>
+
+              {% else %}
+
+              —
+
+              {% endif %}
+
+            </span>
+
+          </div>
+
+
+          <!-- Address -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Address
+            </span>
+
+            <span class="detail-value">
+              {{ customer.address|default:"—" }}
+            </span>
+
+          </div>
+
+
+          <!-- Created -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Customer Since
+            </span>
+
+            <span class="detail-value">
+              {{ customer.created_at|date:"F d, Y" }}
+            </span>
+
+          </div>
+
+
+          <!-- Record ID -->
+          <div class="detail-item">
+
+            <span class="detail-label">
+              Record ID
+            </span>
+
+            <span class="detail-value">
+              #{{ customer.pk }}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- Panel Footer -->
+        <div class="panel-foot">
+
+          <a href="{% url 'customer_app:customer_list' %}" class="back-link">
+            ← Back to Customers
+          </a>
+
+
+          <span class="record-status">
+            <span class="record-status-dot"></span>
+            Active record
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

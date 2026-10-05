@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{% block title %}Customer Management System{% endblock %}</title>
+
+  <meta name="description" content="A modern customer management system for managing customer records efficiently.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %}">
+
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">
+    Skip to content
+  </a>
+
+
+  <!-- =========================
+         NAVIGATION
+    ========================== -->
+  <header class="site-header">
+
+    <nav class="nav container">
+
+      <!-- Logo -->
+      <a href="{% url 'customer_app:home' %}" class="brand">
+        <span class="brand-mark">C</span>
+        <span class="brand-name">Catalyst<span>.</span></span>
+      </a>
+
+
+      <!-- Mobile Menu Toggle -->
+      <input type="checkbox" id="nav-toggle" class="nav-checkbox" aria-label="Toggle navigation">
+
+      <label for="nav-toggle" class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+
+      <!-- Navigation Links -->
+      <div class="nav-links">
+
+        <a href="{% url 'customer_app:home' %}"
+          class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+          Home
+        </a>
+
+        <a href="{% url 'customer_app:customer_list' %}"
+          class="nav-link {% if request.resolver_match.url_name == 'customer_list' %}active{% endif %}">
+          Customers
+        </a>
+
+        <a href="{% url 'customer_app:customer_create' %}" class="btn btn-acid nav-cta">
+          Add Customer
+          <span aria-hidden="true">↗</span>
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+
+  <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+  <main id="main-content">
+
+    <!-- Django Messages -->
+    {% if messages %}
+    <div class="alerts">
+      <div class="container">
+
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+
+          <span class="alert-message">
+            {{ message }}
+          </span>
+
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+    {% endif %}
+
+
+    {% block content %}
+    {% endblock %}
+
+  </main>
+
+
+  <!-- =========================
+         FOOTER
+    ========================== -->
+  <footer class="site-footer">
+
+    <div class="container footer-inner">
+
+      <div class="footer-brand">
+
+        <a href="{% url 'customer_app:home' %}" class="brand footer-logo">
+          <span class="brand-mark">C</span>
+          <span class="brand-name">Catalyst<span>.</span></span>
+        </a>
+
+        <p>
+          A simple, modern and efficient customer management system.
+        </p>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <a href="{% url 'customer_app:home' %}">
+          Home
+        </a>
+
+        <a href="{% url 'customer_app:customer_list' %}">
+          Customers
+        </a>
+
+        <a href="{% url 'customer_app:customer_create' %}">
+          Add Customer
+        </a>
+
+      </div>
+
+
+      <div class="footer-copy">
+        &copy; {% now "Y" %} Customer Management System.
+      </div>
+
+    </div>
+
+  </footer>
+
+
+  {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>
