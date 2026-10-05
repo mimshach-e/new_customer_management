@@ -1033,6 +1033,7 @@ p {
 }
 
 
+
 /* =========================================================
    15. ACTION BUTTONS
 ========================================================= */
@@ -1071,6 +1072,16 @@ p {
         transform .2s ease;
 }
 
+.icon-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
 
 .icon-btn:hover {
     background: var(--text);

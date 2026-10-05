@@ -277,24 +277,39 @@ inner page-list
 
             <!-- Actions -->
             <div class="dash-cell cell-actions" data-label="Actions">
-
-              <a href="{% url 'customer_app:customer_detail' customer.pk %}" class="icon-btn"
-                aria-label="View {{ customer.name }}" title="View">
-                →
+            
+              <!-- View -->
+              <a href="{% url 'customer_app:customer_detail' customer.pk %}" class="icon-btn" aria-label="View {{ customer.name }}"
+                title="View">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                  <circle cx="12" cy="12" r="2.5" />
+                </svg>
               </a>
-
-
-              <a href="{% url 'customer_app:customer_update' customer.pk %}" class="icon-btn"
-                aria-label="Edit {{ customer.name }}" title="Edit">
-                ✎
+            
+            
+              <!-- Edit -->
+              <a href="{% url 'customer_app:customer_update' customer.pk %}" class="icon-btn" aria-label="Edit {{ customer.name }}"
+                title="Edit">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3Z" />
+                  <path d="m13.5 7.5 3 3" />
+                </svg>
               </a>
-
-
+            
+            
+              <!-- Delete -->
               <a href="{% url 'customer_app:customer_delete' customer.pk %}" class="icon-btn danger"
                 aria-label="Delete {{ customer.name }}" title="Delete">
-                ×
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 7h16" />
+                  <path d="M9 7V4h6v3" />
+                  <path d="M7 7l1 13h8l1-13" />
+                  <path d="M10 11v5" />
+                  <path d="M14 11v5" />
+                </svg>
               </a>
-
+            
             </div>
 
           </div>
