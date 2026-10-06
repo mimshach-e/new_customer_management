@@ -112,6 +112,9 @@ inner page-list
     <form method="get" action="{% url 'customer_app:customer_list' %}" class="search-bar">
 
       <select name="field" class="input" aria-label="Search field">
+        <option value="all" {% if current_field == 'all' %}selected{% endif %}>
+          All fields 
+        </option>
 
         {% for field in search_fields %}
 

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from .models import Customer
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView, TemplateView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -6,8 +7,7 @@ from .forms import CustomerForm
 from django.urls import reverse_lazy
 
 
-# Fields that should match when searching
-PARTIAL_MATCH_FIELDS = {'name', 'email', 'address'}
+# Fields to Search
 SEARCH_FIELDS = ['name', 'email', 'phone', 'address']
 
 
@@ -33,26 +33,42 @@ class CustomerListView(ListView):
     context_object_name = "customers"
     paginate_by = 10
 
-    # Listing all customers, searching fields and reading search parameters
+    # Get the initial customer queryset
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        # Get the selected search field and search query
         field = self.request.GET.get('field', '')
         query = self.request.GET.get('q', '').strip()
 
-        # Looking up fields and ppplying the search filter if valid
-        if field in SEARCH_FIELDS and query:
-            lookup = f'{field}__icontains' if field in PARTIAL_MATCH_FIELDS else f'{field}__iexact'
-            queryset = queryset.filter(**{lookup: query})
+       # Return all customers if no search query was provided
+        if not query:
+            return queryset
+
+        # Search across all customer fields
+        if field == 'all':
+            combined = Q()
+
+            for f in SEARCH_FIELDS:
+                combined |= Q(**{f'{f}__icontains': query})
+
+            queryset = queryset.filter(combined)
+
+        # Search within the selected customer field
+        elif field in SEARCH_FIELDS:
+            queryset = queryset.filter(**{f'{field}__icontains': query})        
 
         return queryset
 
     # Get default context, let's search form render dropdown and also re-display the user's current field/search text after reload.
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['search_fields'] = SEARCH_FIELDS
         context['current_field'] = self.request.GET.get('field', '')
         context['current_query'] = self.request.GET.get('q', '')
         context['total_count'] = Customer.objects.count()
+
         return context
 
 
